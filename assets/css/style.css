@@ -1,0 +1,9 @@
+div#hangman pre
+{
+    display:none;
+}
+div#word {
+    letter-spacing: 0.25em;
+    width: 100%;
+    font-size: 300%;
+}

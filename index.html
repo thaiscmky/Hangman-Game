@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="./assets/javascript/game.js"></script>
+</head>
+<body>
+<h1>Guess the Game Soundtrack</h1>
+<p>What game played this song?</p>
+<div id="songplayer">
+
+</div>
+
+<div id="resultModal" class="modal">
+    <div class="content">
+        <p><span id="result"></span></p>
+        <div id="stats"></div>
+        <button id="reset">Restart Game</button>
+    </div>
+</div>
+
+<div id="hangman">
+    <pre>
+        _________
+        |       |
+       ---      |
+                |
+                |
+                |
+          --------
+    </pre>
+    <pre>
+        _________
+        |       |
+        0       |
+                |
+                |
+                |
+          --------
+    </pre>
+    <pre>
+        _________
+        |       |
+        0       |
+        |       |
+                |
+                |
+          --------
+    </pre>
+    <pre>
+        _________
+        |       |
+        0       |
+        |       |
+         \      |
+                |
+          --------
+    </pre>
+    <pre>
+        _________
+        |       |
+        0       |
+        |       |
+       / \      |
+                |
+          --------
+    </pre>
+    <pre>
+        _________
+        |       |
+        0       |
+       /|       |
+       / \      |
+                |
+          --------
+    </pre>
+    <pre>
+        _________
+        |       |
+        0       |
+       /|\      |
+       / \      |
+                |
+          --------
+    </pre>
+</div>
+<div id="word">
+</div>
+<div id="guesses">
+    <p>Letters Guessed: <span></span></p>
+    <p>Guesses Left: <span></span></p>
+</div>
+
+</body>
+</html>
