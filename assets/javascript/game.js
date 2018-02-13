@@ -1,26 +1,21 @@
-
-/*onDOMContentLoaded = (function(){ console.log("DOM ready!") })()
-
-onload = (function(){ console.log("Page fully loaded!") })()
-
-onloadeddata = (function(){ console.log("Data loaded!") })()*
-
+/*
 Instructions, don't make an 80's game, make something "you envision"
     - How about theme songs from retro games?
     - If a user already guessed a letter, do not count it
     - Show a picture of the guess once it is the correct guess
 */
-
 var hangmanGame = {
     wordBank: [],
     lettersGuessed: [],
     gameWord: '',
     guessesLeft: 0,
-    song: './assets/sounds/',
+    correctCounter: {guesses: 0, total: 0},
+    song: '',
     hangmans: [],
     dontRepeat: null,
     init: function(){
         var hangmanContainer = this.getContainer('hangman');
+        this.song = './assets/sounds/';
         this.setWordBank();
         this.setHangmans(hangmanContainer.getElementsByTagName('pre'));
         this.guessesLeft = this.hangmans.length - 1;
@@ -28,6 +23,13 @@ var hangmanGame = {
         this.displayCurrentHangman();
         this.setWord();
         this.setClues();
+    },
+    reset: function() {
+        this.hideCurrentHangman();
+        this.lettersGuessed = [];
+        this.correctCounter = {guesses: 0, total: 0};
+        this.init();
+        window.addEventListener('keyup', receiveKeyInput);
     },
     getContainer: function(divId){
         return document.getElementById(divId);
@@ -52,10 +54,10 @@ var hangmanGame = {
         var wordCount = this.wordBank.length;
         var selectedIndex = Math.floor(Math.random() * wordCount);
         if(this.dontRepeat !== null) {
-            while(selectedIndex === this.dontRepeat)
-            {
+           while(selectedIndex === this.dontRepeat)
+           {
                 selectedIndex = Math.floor(Math.random() * wordCount);
-            }
+           }
         }
         this.dontRepeat = selectedIndex;
         this.gameWord = this.wordBank[selectedIndex];
@@ -72,21 +74,31 @@ var hangmanGame = {
     displayCurrentHangman: function() {
         var elIndex = this.hangmans.length - this.guessesLeft - 1;
         var el = this.hangmans[elIndex];
-        el.style.display = "block";
+        el.style.display = "inline-block";
     },
     hidePreviousHangman: function() {
         var elIndex = this.hangmans.length - this.guessesLeft - 2;
         var el = this.hangmans[elIndex];
         el.style.display = "none";
     },
+    hideCurrentHangman: function() {
+        var elIndex = this.hangmans.length - this.guessesLeft - 1;
+        var el = this.hangmans[elIndex];
+        el.style.display = "none";
+    },
     setClues: function() {
         var container = this.getContainer('word');
+        container.textContent = '';
         var word = this.getWord();
         for(var i = 0; i < word.length ; i++) {
-            //console.log(word.charAt(i));
             var regex = /^[a-zA-Z]$/;
             var span = document.createElement("span");
-            span.textContent = word.charAt(i).search(regex) === -1  ? word.charAt(i) : '_';
+            if(word.charAt(i).search(regex) === -1){
+                span.textContent = word.charAt(i);
+            } else{
+                span.textContent = '_';
+                this.correctCounter.total++;
+            }
             container.appendChild(span);
         }
     },
@@ -97,13 +109,24 @@ var hangmanGame = {
             return;
         this.lettersGuessed.push(keyPressed.toLowerCase());
         this.showLettersGuessed();
-        if(!this.revealLetters(keyPressed)){
+        if(this.revealLetters(keyPressed)){
+            if(this.correctCounter.guesses === this.correctCounter.total) {
+                gameDialogs.hideDisplay(gameDialogs.modalDescriptions[0]);
+                gameDialogs.showDisplay(gameDialogs.modalDescriptions[1]);
+                gameDialogs.setModalAction(gameDialogs.modalActions[1]);
+                gameDialogs.modalBox.show();
+            }
+        }else{
             this.setGuessesLeft();
             this.showGuessesLeft();
             this.hidePreviousHangman();
             this.displayCurrentHangman();
-            if(this.getGuessesLeft() === 0)
-                window.removeEventListener('keyup', receiveKeyInput);
+            if(this.getGuessesLeft() === 0) {
+                gameDialogs.hideDisplay(gameDialogs.modalDescriptions[0]);
+                gameDialogs.showDisplay(gameDialogs.modalDescriptions[1]);
+                gameDialogs.setModalAction(gameDialogs.modalActions[1]);
+                gameDialogs.modalBox.show();
+            }
         }
     },
     revealLetters: function(letter) {
@@ -112,17 +135,13 @@ var hangmanGame = {
         var notGuessed = this.getContainer('word').getElementsByTagName('span');
         var matches, found = false;
         while( (matches = regex.exec(word)) !== null){
-            var msg = 'Found ' + matches[0] + '. ';
-            msg += 'Next match starts at ' + regex.lastIndex;
             notGuessed[regex.lastIndex - 1].textContent =
                 this.getWord().charAt(regex.lastIndex - 1) === letter ? letter : this.getWord().charAt(regex.lastIndex - 1);
-            console.log(msg);
             found = true;
+            this.correctCounter.guesses++;
         }
-        console.log(found);
         return found;
     },
-
     showLettersGuessed: function(){
         var container = this.getContainer('guesses').getElementsByTagName('p');
         container = container[0].getElementsByTagName('span');
@@ -134,22 +153,58 @@ var hangmanGame = {
         container[0].textContent = this.getGuessesLeft();
     },
     setGuessesLeft: function() {
+        if(this.guessesLeft - 1 === 0) window.removeEventListener('keyup', receiveKeyInput);
         this.guessesLeft = this.guessesLeft - 1;
     },
     getGuessesLeft: function() {
         return this.guessesLeft;
     }
 };
-
-var gameModal = {
-
+var gameDialogs = {
+    modalBox: null,
+    modalActions: ['Start Game', 'Play Again'],
+    modalDescriptions: ['startscreen', 'exitscreen'],
+    init: function(){
+        var modalContainer = document.getElementById('gameModal');
+        this.modalBox = new Modal(modalContainer, {
+            backdrop: 'static',
+            keyboard: false
+        });
+        this.setModalAction(this.modalActions[0]);
+    },
+    setModalAction: function(str){
+        document.getElementById('gameModal').getElementsByTagName('button')[0].textContent = str;
+    },
+    respondToAction: function(action) {
+        if(action === this.modalActions[0]) {
+            this.modalBox.hide();
+            hangmanGame.init();
+        }
+        if(action === this.modalActions[1]) {
+            this.modalBox.hide();
+            hangmanGame.reset();
+        }
+    },
+    showDisplay: function(idName) {
+        document.getElementById(idName).style.display = 'block';
+    },
+    hideDisplay: function(idName) {
+        document.getElementById(idName).style.display = 'none';
+    }
 };
 
 function receiveKeyInput(){
-        hangmanGame.checkGuess(event.key);
+    hangmanGame.checkGuess(event.key);
 }
+
 window.onload = function(){
-    hangmanGame.init();
+    gameDialogs.init();
+    gameDialogs.modalBox.show();
     window.addEventListener('keyup', receiveKeyInput);
+    gameDialogs.showDisplay(gameDialogs.modalDescriptions[0]);
+    document.getElementById('gameAction').onclick = function(e) {
+        var typeOfAction = e.target.textContent;
+        gameDialogs.respondToAction(typeOfAction);
+    };
 };
 
