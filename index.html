@@ -4,97 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Hangman</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
     <link rel="stylesheet" href="./assets/css/style.css">
     <script src="./assets/javascript/game.js"></script>
 </head>
 <body>
-<h1>Guess the Game Soundtrack</h1>
-<p>What game played this song?</p>
-<div id="songplayer">
-
-</div>
-
-<div id="resultModal" class="modal">
-    <div class="content">
-        <p><span id="result"></span></p>
-        <div id="stats"></div>
-        <button id="reset">Restart Game</button>
+<div id="gameModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content px-4 py-3">
+            <div id="startscreen">
+                <h1>Welcome to Hangman:<br/>Retro Games Edition</h1>
+                <p>Play the song associated with the word displayed.</p>
+                <p>Try to guess which game features that soundtrack.</p>
+                <p>Guess it right, or die trying!</p>
+            </div>
+            <div id="exitscreen">
+                <h1></h1>
+                <div id="result"></div>
+                <div id="stats"></div>
+            </div>
+            <button type="button" id="gameAction"></button>
+        </div>
     </div>
 </div>
-
-<div id="hangman">
-    <pre>
-        _________
-        |       |
-       ---      |
-                |
-                |
-                |
-          --------
-    </pre>
-    <pre>
-        _________
-        |       |
-        0       |
-                |
-                |
-                |
-          --------
-    </pre>
-    <pre>
-        _________
-        |       |
-        0       |
-        |       |
-                |
-                |
-          --------
-    </pre>
-    <pre>
-        _________
-        |       |
-        0       |
-        |       |
-         \      |
-                |
-          --------
-    </pre>
-    <pre>
-        _________
-        |       |
-        0       |
-        |       |
-       / \      |
-                |
-          --------
-    </pre>
-    <pre>
-        _________
-        |       |
-        0       |
-       /|       |
-       / \      |
-                |
-          --------
-    </pre>
-    <pre>
-        _________
-        |       |
-        0       |
-       /|\      |
-       / \      |
-                |
-          --------
-    </pre>
-</div>
-<div id="word">
-</div>
-<div id="guesses">
-    <p>Letters Guessed: <span></span></p>
-    <p>Guesses Left: <span></span></p>
-</div>
-
+<main class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>Guess the Game Soundtrack</h1>
+            <h2>What game played this song?</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div id="guesses" class="col-8">
+            <div class="row">
+                <div id="songplayer" class="col-6">
+                    ####PLAY DAT SONG####
+                </div>
+                <div class="col-6">
+                    <p>Letters Guessed: <span></span></p>
+                    <p>Guesses Left: <span></span></p>
+                </div>
+            </div>
+        </div>
+        <div id="hangman" class="col-4 position-relative">
+            <pre>
+ _________
+ |       |
+---      |
+         |
+         |
+         |
+   --------
+            </pre>
+            <pre>
+ _________
+ |       |
+ 0       |
+         |
+         |
+         |
+   --------
+            </pre>
+            <pre>
+ _________
+ |       |
+ 0       |
+ |       |
+         |
+         |
+   --------
+            </pre>
+            <pre>
+ _________
+ |       |
+ 0       |
+ |       |
+  \      |
+         |
+   --------
+            </pre>
+            <pre>
+ _________
+ |       |
+ 0       |
+ |       |
+/ \      |
+         |
+   --------
+            </pre>
+            <pre>
+ _________
+ |       |
+ 0       |
+/|       |
+/ \      |
+         |
+   --------
+            </pre>
+            <pre>
+ _________
+ |       |
+ 0       |
+/|\      |
+/ \      |
+         |
+   --------
+            </pre>
+        </div>
+    </div>
+    <div class="row">
+        <div id="word" class="col-12">
+        </div>
+    </div>
+</main>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap.native/2.0.15/bootstrap-native-v4.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

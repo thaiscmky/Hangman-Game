@@ -48,7 +48,7 @@ var hangmanGame = {
         this.wordBank[7] = "Street Fighter";
         this.wordBank[8] = "Mega Man";
         this.wordBank[9] = "Duck Hunt";
-        this.wordBank[10] = "Mike Tyson Punch Out Punch-Out!!";
+        this.wordBank[10] = "Mike Tyson Punch Out!!";
     },
     setWord: function() {
         var wordCount = this.wordBank.length;
@@ -109,14 +109,20 @@ var hangmanGame = {
             return;
         this.lettersGuessed.push(keyPressed.toLowerCase());
         this.showLettersGuessed();
+        var modalContainer = this.getContainer(gameDialogs.modalDescriptions[1]);
+        var modalTitle = modalContainer.getElementsByTagName('h1');
+        var resultBox = modalContainer.querySelector('#result');
+        var statsBox = modalContainer.querySelector('#stats');
         if(this.revealLetters(keyPressed)){
             if(this.correctCounter.guesses === this.correctCounter.total) {
+                modalTitle[0].textContent = 'Congratulations! You\'ve guessed it!';
                 gameDialogs.hideDisplay(gameDialogs.modalDescriptions[0]);
                 gameDialogs.showDisplay(gameDialogs.modalDescriptions[1]);
                 gameDialogs.setModalAction(gameDialogs.modalActions[1]);
                 gameDialogs.modalBox.show();
             }
         }else{
+            modalTitle[0].textContent = 'You\'ve run out of guesses...';
             this.setGuessesLeft();
             this.showGuessesLeft();
             this.hidePreviousHangman();

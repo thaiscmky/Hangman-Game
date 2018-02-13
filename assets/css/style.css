@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
+body {
+    font-family: 'Inconsolata', Monospaced, serif;
+}
 div#hangman pre
 {
     display:none;
@@ -6,4 +10,18 @@ div#word {
     letter-spacing: 0.25em;
     width: 100%;
     font-size: 300%;
+}
+div#guesses span {
+    text-transform: uppercase;
+}
+div#hangman {
+    margin-bottom: -6em;
+}
+div#hangman pre {
+    font-size: 2em;
+    left: -2em;
+}
+div#startscreen, div#exitscreen
+{
+    display: none;
 }
