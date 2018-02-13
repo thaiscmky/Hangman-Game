@@ -37,12 +37,16 @@
         </div>
     </div>
     <div class="row">
-        <div id="guesses" class="col-8">
+        <div class="col-8">
             <div class="row">
                 <div id="songplayer" class="col-6">
-                    ####PLAY DAT SONG####
+                    <p>Listen to your clue:</p>
+                    <audio controls>
+                        <source src="" type="audio/mp3">
+                        <p>Your browser doesn't support HTML5 audio. Here is a <a href="">link to the audio</a> instead.</p>
+                    </audio>
                 </div>
-                <div class="col-6">
+                <div id="guesses" class="col-6">
                     <p>Letters Guessed: <span></span></p>
                     <p>Guesses Left: <span></span></p>
                 </div>
