@@ -2,8 +2,13 @@
 body {
     font-family: 'Inconsolata', Monospaced, serif;
 }
+main {
+    background-color: #000;
+    color: #00FF00;
+}
 div#hangman pre
 {
+    color: #ffdf00;
     display:none;
 }
 div#word {
@@ -24,4 +29,10 @@ div#hangman pre {
 div#startscreen, div#exitscreen
 {
     display: none;
+}
+.img-fluid {
+    width: 80%;
+}
+div#exitscreen div, div#exitscreen h1{
+    text-align: center;
 }

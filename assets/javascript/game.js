@@ -28,6 +28,7 @@ var hangmanGame = {
         this.setClues();
     },
     reset: function() {
+        this.getContainer('word').textContent = '';
         this.hideCurrentHangman();
         this.lettersGuessed = [];
         this.correctCounter = {guesses: 0, total: 0};
@@ -123,7 +124,7 @@ var hangmanGame = {
         var statsBox = modalContainer.querySelector('#stats');
         if(this.revealLetters(keyPressed)){
             if(this.correctCounter.guesses === this.correctCounter.total) {
-                modalTitle[0].textContent = 'Congratulations! You\'ve guessed it!';
+                modalTitle[0].textContent = 'Congratulations!';
                this.displayGameOver(true);
             }
         }else{
@@ -138,26 +139,31 @@ var hangmanGame = {
         }
     },
     displayGameOver: function(playerWin){
-        this.getContainer('word').textContent = '';
         var resultContainer = this.getContainer('result');
         resultContainer.textContent = '';
         var resultingImage = document.createElement('img');
         resultingImage.src = this.gameImage + this.mediaLabel + '.jpg';
+        resultingImage.classList= 'rounded mx-auto d-block img-thumbnail img-fluid';
         var resultingHangman = this.hangmans[this.hangmans.length - 1];
         var txtwrap = document.createElement('p');
+        var emphasis = document.createElement('STRONG');
+        var emphasisText = document.createTextNode(this.gameWord);
+        emphasis.appendChild(emphasisText);
         gameDialogs.hideDisplay(gameDialogs.modalDescriptions[0]);
         gameDialogs.showDisplay(gameDialogs.modalDescriptions[1]);
 
         if(playerWin){
             gameDialogs.setModalAction(gameDialogs.modalActions[1]);
             resultContainer.appendChild(resultingImage);
-            txtwrap.textContent = 'You\'ve guessed the word ' + this.gameWord + '.';
+            txtwrap.appendChild(document.createTextNode('You\'ve guessed the word '));
         } else {
             gameDialogs.setModalAction(gameDialogs.modalActions[1]);
             resultContainer.appendChild(resultingHangman);
-            txtwrap.textContent = 'The word was ' + this.gameWord + '.';
+            txtwrap.textContent = 'The word was ';
         }
-
+        txtwrap.appendChild(emphasis);
+        console.log(txtwrap);
+        txtwrap.appendChild(document.createTextNode('.'));
         resultContainer.appendChild(txtwrap);
         gameDialogs.modalBox.show();
 
@@ -186,7 +192,7 @@ var hangmanGame = {
         container[0].textContent = this.getGuessesLeft();
     },
     setGuessesLeft: function() {
-        if(this.guessesLeft - 1 === 0) window.removeEventListener('keyup', receiveKeyInput);
+        if(this.guessesLeft - 1 === 0)
         this.guessesLeft = this.guessesLeft - 1;
     },
     getGuessesLeft: function() {
@@ -211,7 +217,7 @@ var gameDialogs = {
     respondToAction: function(action) {
         if(action === this.modalActions[0]) {
             this.modalBox.hide();
-            hangmanGame.init();
+            window.addEventListener('keyup', receiveKeyInput);
         }
         if(action === this.modalActions[1]) {
             this.modalBox.hide();
@@ -231,9 +237,9 @@ function receiveKeyInput(){
 }
 
 window.onload = function(){
+    hangmanGame.init();
     gameDialogs.init();
     gameDialogs.modalBox.show();
-    window.addEventListener('keyup', receiveKeyInput);
     gameDialogs.showDisplay(gameDialogs.modalDescriptions[0]);
     document.getElementById('gameAction').onclick = function(e) {
         var typeOfAction = e.target.textContent;
