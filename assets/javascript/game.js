@@ -28,6 +28,9 @@ var hangmanGame = {
         this.setClues();
     },
     reset: function() {
+        var container = this.getContainer('guesses').getElementsByTagName('p');
+        container = container[0].getElementsByTagName('span');
+        container[0].textContent = '';
         this.getContainer('word').textContent = '';
         this.hideCurrentHangman();
         this.lettersGuessed = [];
