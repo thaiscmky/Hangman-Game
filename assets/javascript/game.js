@@ -137,7 +137,7 @@ var hangmanGame = {
             }
         }
     },
-    displayGameOver(playerWin) {
+    displayGameOver: function(playerWin){
         this.getContainer('word').textContent = '';
         var resultContainer = this.getContainer('result');
         resultContainer.textContent = '';
