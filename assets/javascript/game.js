@@ -131,8 +131,8 @@ var hangmanGame = {
             modalTitle[0].textContent = 'You\'ve run out of guesses...';
             this.setGuessesLeft();
             this.showGuessesLeft();
-            this.hidePreviousHangman();
             this.displayCurrentHangman();
+            this.hidePreviousHangman();
             if(this.getGuessesLeft() === 0) {
                 this.displayGameOver(false);
             }
@@ -144,7 +144,8 @@ var hangmanGame = {
         var resultingImage = document.createElement('img');
         resultingImage.src = this.gameImage + this.mediaLabel + '.jpg';
         resultingImage.classList= 'rounded mx-auto d-block img-thumbnail img-fluid';
-        var resultingHangman = this.hangmans[this.hangmans.length - 1];
+        var resultingHangman = document.createElement('pre');
+        resultingHangman.textContent = this.hangmans[this.hangmans.length - 1].textContent;
         var txtwrap = document.createElement('p');
         var emphasis = document.createElement('STRONG');
         var emphasisText = document.createTextNode(this.gameWord);
@@ -162,7 +163,6 @@ var hangmanGame = {
             txtwrap.textContent = 'The word was ';
         }
         txtwrap.appendChild(emphasis);
-        console.log(txtwrap);
         txtwrap.appendChild(document.createTextNode('.'));
         resultContainer.appendChild(txtwrap);
         gameDialogs.modalBox.show();
@@ -192,7 +192,7 @@ var hangmanGame = {
         container[0].textContent = this.getGuessesLeft();
     },
     setGuessesLeft: function() {
-        if(this.guessesLeft - 1 === 0)
+        if(this.guessesLeft !== 0)
         this.guessesLeft = this.guessesLeft - 1;
     },
     getGuessesLeft: function() {
