@@ -17,6 +17,7 @@ var hangmanGame = {
     dontRepeat: null,
     init: function(){
         var hangmanContainer = this.getContainer('hangman');
+        this.setAudioStyles();
         this.song = './assets/sounds/';
         this.gameImage = './assets/images/'
         this.setWordBank();
@@ -26,6 +27,11 @@ var hangmanGame = {
         this.displayCurrentHangman();
         this.setWord();
         this.setClues();
+    },
+    setAudioStyles: function() {
+      var player = this.getContainer('songplayer').querySelector('audio');
+      player.style.width = '100%';
+      player.style.maxWidth = '20vw';
     },
     reset: function() {
         var container = this.getContainer('guesses').getElementsByTagName('p');
